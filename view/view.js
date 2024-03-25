@@ -64,11 +64,11 @@ export default class View {
             let row = Math.floor(index / cols)
             let col = Math.floor(index % cols)
 
-            if(row >= 0 && col >= 0){
-              this.controller.openTile(row, col)
+            if (row >= 0 && col >= 0) {
+                this.controller.openTile(row, col)
             }
 
-            
+
         })
 
     }
