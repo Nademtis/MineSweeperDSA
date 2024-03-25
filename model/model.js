@@ -52,8 +52,10 @@ export default class Model {
   openTile(row, col) {
     this.grid[row][col].isOpen = true;
     if (this.grid[row][col].tileType.ZERO) {
+        
             this.cascadeEmpties(row, col)
             this.openNeighbours(row, col)
+            
         }
     return this.grid;
   }
@@ -66,9 +68,9 @@ export default class Model {
         if (r + 1 < this.rows)this.grid[r + 1][c].isOpen = true
         if (r - 1 >= 0 )this.grid[r - 1][c].isOpen = true
         if (r + 1 < this.rows && c + 1 < this.cols)this.grid[r + 1][c + 1].isOpen = true
-        if (r - 1 >= 0)this.grid[r - 1][c - 1].isOpen = true
-        if (r + 1 < this.rows)this.grid[r + 1][c - 1].isOpen = true
-        if (r - 1 >= 0)this.grid[r - 1][c + 1].isOpen = true
+        if (r - 1 >= 0 && c - 1 >= 0 )this.grid[r - 1][c - 1].isOpen = true
+        if (r + 1 < this.rows && c - 1 >= 0 )this.grid[r + 1][c - 1].isOpen = true
+        if (r - 1 >= 0 && c + 1 < this.cols )this.grid[r - 1][c + 1].isOpen = true
 
         // if (this.grid[r][c + 1].tileType.ZERO) {
         //     this.cascadeEmpties(r, c + 1)
