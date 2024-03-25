@@ -9,11 +9,9 @@ export default class Controller {
         this.view = new View(this)
     }
     init() {
-        //inital method. called by main.js
+        
 
-        console.log("hi from controller");
-        this.view.sayHello()
-        this.model.sayHello()
+        
     }
 
 }
