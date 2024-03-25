@@ -27,7 +27,7 @@ export default class View {
             const tileData = grid[Math.floor(i / cols)][i % cols]
             if (tileData.isOpen) {
                 if (tileData.tileType.BOMB) {
-                    this.addImageToDiv(tiles[i], "view/img/bomb.png");
+                    this.addImageToDiv(tiles[i], "view/img/bombExplode.png");
                 } else if (tileData.tileType.ZERO) {
                     this.addImageToDiv(tiles[i], "view/img/tileOpen.png");
                 } else if (tileData.tileType.ONE) {
@@ -64,7 +64,11 @@ export default class View {
             let row = Math.floor(index / cols)
             let col = Math.floor(index % cols)
 
-            this.controller.openTile(row, col)
+            if(row >= 0 && col >= 0){
+              this.controller.openTile(row, col)
+            }
+
+            
         })
 
     }

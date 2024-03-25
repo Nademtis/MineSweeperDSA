@@ -15,8 +15,8 @@ export default class Controller {
     this.view.displayGrid(this.model.rows,this.model.cols);
   }
   openTile(row, col){
-    this.model.openTile(row, col)
-    let newGrid = this.model.grid
+    
+    let newGrid = this.model.openTile(row, col)
     this.view.updateGrid(this.model.cols, newGrid)
   }
 }
