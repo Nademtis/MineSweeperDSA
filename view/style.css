@@ -11,8 +11,8 @@ body {
 }
 
 .tile {
-  width: 4em;
-  height: 4em;
+  width: 2em;
+  height: 2em;
   background-size: cover;
   image-rendering: pixelated;
 

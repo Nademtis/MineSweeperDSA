@@ -12,6 +12,11 @@ export default class Controller {
   init() {
     this.model.initGrid();
     const grid = this.model.grid;
-    this.view.displayGrid(this.model.width, this.model.height, grid);
+    this.view.displayGrid(this.model.rows,this.model.cols);
+  }
+  openTile(row, col){
+    this.model.openTile(row, col)
+    let newGrid = this.model.grid
+    this.view.updateGrid(this.model.cols, newGrid)
   }
 }
