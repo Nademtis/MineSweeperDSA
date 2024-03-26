@@ -14,6 +14,7 @@ class TileType {
   }
 }
 
+
 export default class Model {
   constructor(cols, rows, amountOfBombs) {
     this.cols = cols;
@@ -69,10 +70,44 @@ export default class Model {
     return this.grid;
   }
 
+  chord(row, col) {
+    let tileType = this.grid[row][col].tileType
+    console.log(tileType);
 
+    const tileValue = this.getIntValue(tileType)
+    const flagAmount = this.countNeighborFlags(row, col)
+    if (tileValue == flagAmount) {
+
+    }
+    //console.log("value for this chord is " + tileValue);
+
+  }
+
+  getIntValue(tileType) {
+    if (tileType.BOMB) return -1; // or whatever value represents a bomb
+    if (tileType.FLAG) return -2; // or whatever value represents a flag
+    if (tileType.ZERO) return 0;
+    if (tileType.ONE) return 1;
+    if (tileType.TWO) return 2;
+    if (tileType.THREE) return 3;
+    if (tileType.FOUR) return 4;
+    if (tileType.FIVE) return 5;
+    if (tileType.SIX) return 6;
+    if (tileType.SEVEN) return 7;
+    if (tileType.EIGHT) return 8;
+  }
+
+  /*openNeighbours(r, c) {
+    if (!this.grid[r][c + 1].tileType.FLAG && c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
+    if (!this.grid[r][c - 1].tileType.FLAG && c - 1 >= 0) this.grid[r][c - 1].isOpen = true
+    if (!this.grid[r + 1][c].tileType.FLAG && r + 1 < this.rows) this.grid[r + 1][c].isOpen = true
+    if (!this.grid[r - 1][c].tileType.FLAG && r - 1 >= 0) this.grid[r - 1][c].isOpen = true
+    if (!this.grid[r + 1][c + 1].tileType.FLAG && r + 1 < this.rows && c + 1 < this.cols) this.grid[r + 1][c + 1].isOpen = true
+    if (!this.grid[r - 1][c - 1].tileType.FLAG && r - 1 >= 0 && c - 1 >= 0) this.grid[r - 1][c - 1].isOpen = true
+    if (!this.grid[r + 1][c - 1].tileType.FLAG && r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
+    if (!this.grid[r - 1][c + 1].tileType.FLAG && r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
+  }*/
   openNeighbours(r, c) {
-
-
     if (c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
     if (c - 1 >= 0) this.grid[r][c - 1].isOpen = true
     if (r + 1 < this.rows) this.grid[r + 1][c].isOpen = true
@@ -81,13 +116,6 @@ export default class Model {
     if (r - 1 >= 0 && c - 1 >= 0) this.grid[r - 1][c - 1].isOpen = true
     if (r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
     if (r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
-
-    // if (this.grid[r][c + 1].tileType.ZERO) {
-    //     this.cascadeEmpties(r, c + 1)
-    // }
-    // if (this.grid[r][c - 1].tileType.ZERO) {
-    //     this.cascadeEmpties(r, c - 1)
-    // }
   }
 
   setTileValues() {
@@ -122,6 +150,22 @@ export default class Model {
     if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType.ZERO && !this.grid[r + 1][c - 1].isOpen) this.openTile(r + 1, c - 1); //  down left
     if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType.ZERO && !this.grid[r - 1][c + 1].isOpen) this.openTile(r - 1, c + 1); //  up right
 
+  }
+
+  countNeighborFlags(r, c) {
+    let count = 0;
+
+    if (c + 1 < this.cols && this.grid[r][c + 1].tileType.FLAG) count++; // right
+    if (c - 1 >= 0 && this.grid[r][c - 1].tileType.FLAG) count++; // left
+    if (r + 1 < this.rows && this.grid[r + 1][c].tileType.FLAG) count++; // under
+    if (r - 1 >= 0 && this.grid[r - 1][c].tileType.FLAG) count++; //over
+    if (r + 1 < this.rows && c + 1 < this.cols && this.grid[r + 1][c + 1].tileType.FLAG) count++; // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && this.grid[r - 1][c - 1].tileType.FLAG) count++; //  up left
+    if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType.FLAG) count++; //  down left
+    if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType.FLAG) count++; //  up right
+
+    console.log(count);
+    return count;
   }
 
   countNeighborBombs(r, c) {

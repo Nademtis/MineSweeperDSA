@@ -21,4 +21,13 @@ export default class Controller {
     let newGrid = this.model.flagTile(row, col);
     this.view.updateGrid(this.model.cols, newGrid);
   }
+  handleLeftClick(row, col){
+    if (this.model.grid[row][col].isOpen){
+      //console.log("should try to chord");
+      this.model.chord(row, col)
+      //update view
+    }else{
+      this.openTile(row, col)
+    }
+  }
 }

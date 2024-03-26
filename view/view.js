@@ -19,8 +19,8 @@ export default class View {
                 board.appendChild(tile);
             }
         }
-        this.handleClick(rows, cols)
-        this.handleRightClick(rows, cols)
+        this.handleClick(cols)
+        this.handleRightClick(cols)
     }
     updateGrid(cols, grid) {
         const tiles = document.querySelectorAll(".tile")
@@ -54,14 +54,14 @@ export default class View {
             } else if (!tileData.isOpen) {
                 if (tileData.tileType.FLAG) {
                     this.addImageToDiv(tiles[i], "view/img/flag.png");
-                }else if (!tileData.tileType.FLAG){
+                } else if (!tileData.tileType.FLAG) {
                     this.addImageToDiv(tiles[i], "view/img/tileClosed.png");
                 }
             }
         }
     }
 
-    handleClick(rows, cols) {
+    handleClick(cols) {
         //if tile is open dont send request to controller
         document.querySelector("#boardContainer").addEventListener("click", (event) => {
             let tile = event.target
@@ -72,12 +72,12 @@ export default class View {
             let col = Math.floor(index % cols)
 
             if (row >= 0 && col >= 0) {
-                this.controller.openTile(row, col)
+                this.controller.handleLeftClick(row, col)
             }
         })
     }
 
-    handleRightClick(rows, cols) {
+    handleRightClick(cols) {
         //if tile is open dont send request to controller
 
         document.querySelector("#boardContainer").addEventListener("contextmenu", (event) => {
@@ -91,8 +91,6 @@ export default class View {
 
             if (row >= 0 && col >= 0) {
                 this.controller.flagTile(row, col)
-                //console.log("should flag on " + row + " " + col);
-
             }
         })
     }
