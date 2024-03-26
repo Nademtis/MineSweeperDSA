@@ -17,4 +17,8 @@ export default class Controller {
     let newGrid = this.model.openTile(row, col);
     this.view.updateGrid(this.model.cols, newGrid);
   }
+  flagTile(row, col){
+    let newGrid = this.model.flagTile(row, col);
+    this.view.updateGrid(this.model.cols, newGrid);
+  }
 }

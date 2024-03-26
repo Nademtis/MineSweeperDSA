@@ -20,6 +20,7 @@ export default class View {
             }
         }
         this.handleClick(rows, cols)
+        this.handleRightClick(rows, cols)
     }
     updateGrid(cols, grid) {
         const tiles = document.querySelectorAll(".tile")
@@ -50,6 +51,12 @@ export default class View {
 
                 // if tile is open show tileData
                 // else tile is closed show closedTile
+            } else if (!tileData.isOpen) {
+                if (tileData.tileType.FLAG) {
+                    this.addImageToDiv(tiles[i], "view/img/flag.png");
+                }else if (!tileData.tileType.FLAG){
+                    this.addImageToDiv(tiles[i], "view/img/tileClosed.png");
+                }
             }
         }
     }
@@ -67,10 +74,27 @@ export default class View {
             if (row >= 0 && col >= 0) {
                 this.controller.openTile(row, col)
             }
-
-
         })
+    }
 
+    handleRightClick(rows, cols) {
+        //if tile is open dont send request to controller
+
+        document.querySelector("#boardContainer").addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+            let tile = event.target
+            let tiles = document.querySelectorAll("#boardContainer .tile")
+
+            let index = Array.from(tiles).indexOf(tile)
+            let row = Math.floor(index / cols)
+            let col = Math.floor(index % cols)
+
+            if (row >= 0 && col >= 0) {
+                this.controller.flagTile(row, col)
+                //console.log("should flag on " + row + " " + col);
+
+            }
+        })
     }
     addImageToDiv(div, imagePath) {
         div.style.backgroundImage = `url(${imagePath})`;
