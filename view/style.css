@@ -8,6 +8,12 @@ body {
 #boardContainer {
   display: grid;
   grid-template-columns: repeat(var(--GRID_WIDTH), max-content);
+  
+}
+#topBar{
+  width: 100%;
+  height: 5em;
+  background-color: #494646;
 }
 
 .tile {
