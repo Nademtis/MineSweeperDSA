@@ -36,29 +36,37 @@ export default class Model {
     console.table(this.grid);
   }
 
-  generateBombs() {
+  generateBombs(){//CAN BE OPTIMIZED***
     let bombsLeft = this.amountOfBombs;
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        if (Math.random() < 0.15) {
-          console.log("B");
-          this.grid[row][col].tileType.BOMB = true;
-          bombsLeft--;
+    //let cnt =0;
+    while(bombsLeft >= 0){
+        let randomRowIndex = Math.floor(Math.random()*this.rows)
+        let randomColIndex = Math.floor(Math.random()*this.cols)
+        if(!this.grid[randomRowIndex][randomColIndex].tileType.BOMB){
+            this.grid[randomRowIndex][randomColIndex].tileType.BOMB = true;
+            bombsLeft--
         }
-      }
+        //cnt++;
     }
     this.setTileValues();
+    //console.log("times bombs placed"+cnt);
   }
 
+
+
   openTile(row, col) {
-    this.grid[row][col].isOpen = true;
-    if (this.grid[row][col].tileType.ZERO) {
 
-      this.cascadeEmpties(row, col)
-      this.openNeighbours(row, col)
+    if(!this.grid[row][col].tileType.FLAG){
+        this.grid[row][col].isOpen = true;
+        if (this.grid[row][col].tileType.ZERO) {
 
+        this.cascadeEmpties(row, col)
+        this.openNeighbours(row, col)
+
+        }
     }
     return this.grid;
+
   }
 
   flagTile(row, col) {
@@ -77,7 +85,7 @@ export default class Model {
     const tileValue = this.getIntValue(tileType)
     const flagAmount = this.countNeighborFlags(row, col)
     if (tileValue == flagAmount) {
-        this.openNeighbours2(row,col)
+        this.openNeighbours(row,col)
     }
 
     return this.grid;
@@ -99,19 +107,10 @@ export default class Model {
     if (tileType.EIGHT) return 8;
   }
 
-  /*openNeighbours(r, c) {
-    if (!this.grid[r][c + 1].tileType.FLAG && c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
-    if (!this.grid[r][c - 1].tileType.FLAG && c - 1 >= 0) this.grid[r][c - 1].isOpen = true
-    if (!this.grid[r + 1][c].tileType.FLAG && r + 1 < this.rows) this.grid[r + 1][c].isOpen = true
-    if (!this.grid[r - 1][c].tileType.FLAG && r - 1 >= 0) this.grid[r - 1][c].isOpen = true
-    if (!this.grid[r + 1][c + 1].tileType.FLAG && r + 1 < this.rows && c + 1 < this.cols) this.grid[r + 1][c + 1].isOpen = true
-    if (!this.grid[r - 1][c - 1].tileType.FLAG && r - 1 >= 0 && c - 1 >= 0) this.grid[r - 1][c - 1].isOpen = true
-    if (!this.grid[r + 1][c - 1].tileType.FLAG && r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
-    if (!this.grid[r - 1][c + 1].tileType.FLAG && r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
-  }*/
+  
 
 
- openNeighbours2(r, c) {
+ openNeighbours(r, c) {
 
     if (c + 1 < this.cols && !this.grid[r][c + 1].tileType.FLAG && !this.grid[r][c + 1].isOpen) this.openTile(r, c + 1); // right
     if (c - 1 >= 0 && !this.grid[r][c - 1].tileType.FLAG && !this.grid[r][c - 1].isOpen) this.openTile(r, c - 1); // left
@@ -124,16 +123,6 @@ export default class Model {
 
   }
 
-  openNeighbours(r, c) {
-    if (c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
-    if (c - 1 >= 0) this.grid[r][c - 1].isOpen = true
-    if (r + 1 < this.rows) this.grid[r + 1][c].isOpen = true
-    if (r - 1 >= 0) this.grid[r - 1][c].isOpen = true
-    if (r + 1 < this.rows && c + 1 < this.cols) this.grid[r + 1][c + 1].isOpen = true
-    if (r - 1 >= 0 && c - 1 >= 0) this.grid[r - 1][c - 1].isOpen = true
-    if (r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
-    if (r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
-  }
 
   setTileValues() {
     for (let row = 0; row < this.rows; row++) {
@@ -201,3 +190,17 @@ export default class Model {
     return count;
   }
 }
+
+
+
+/*
+  openNeighboursOLD(r, c) {
+    if (c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
+    if (c - 1 >= 0) this.grid[r][c - 1].isOpen = true
+    if (r + 1 < this.rows) this.grid[r + 1][c].isOpen = true
+    if (r - 1 >= 0) this.grid[r - 1][c].isOpen = true
+    if (r + 1 < this.rows && c + 1 < this.cols) this.grid[r + 1][c + 1].isOpen = true
+    if (r - 1 >= 0 && c - 1 >= 0) this.grid[r - 1][c - 1].isOpen = true
+    if (r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
+    if (r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
+  }*/
