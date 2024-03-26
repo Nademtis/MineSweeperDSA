@@ -77,8 +77,10 @@ export default class Model {
     const tileValue = this.getIntValue(tileType)
     const flagAmount = this.countNeighborFlags(row, col)
     if (tileValue == flagAmount) {
-
+        this.openNeighbours2(row,col)
     }
+
+    return this.grid;
     //console.log("value for this chord is " + tileValue);
 
   }
@@ -107,6 +109,21 @@ export default class Model {
     if (!this.grid[r + 1][c - 1].tileType.FLAG && r + 1 < this.rows && c - 1 >= 0) this.grid[r + 1][c - 1].isOpen = true
     if (!this.grid[r - 1][c + 1].tileType.FLAG && r - 1 >= 0 && c + 1 < this.cols) this.grid[r - 1][c + 1].isOpen = true
   }*/
+
+
+ openNeighbours2(r, c) {
+
+    if (c + 1 < this.cols && !this.grid[r][c + 1].tileType.FLAG && !this.grid[r][c + 1].isOpen) this.openTile(r, c + 1); // right
+    if (c - 1 >= 0 && !this.grid[r][c - 1].tileType.FLAG && !this.grid[r][c - 1].isOpen) this.openTile(r, c - 1); // left
+    if (r + 1 < this.rows && !this.grid[r + 1][c].tileType.FLAG && !this.grid[r + 1][c].isOpen) this.openTile(r + 1, c); // under
+    if (r - 1 >= 0 && !this.grid[r - 1][c].tileType.FLAG && !this.grid[r - 1][c].isOpen) this.openTile(r - 1, c); //over
+    if (r + 1 < this.rows && c + 1 < this.cols && !this.grid[r + 1][c + 1].tileType.FLAG && !this.grid[r + 1][c + 1].isOpen) this.openTile(r + 1, c + 1); // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && !this.grid[r - 1][c - 1].tileType.FLAG && !this.grid[r - 1][c - 1].isOpen) this.openTile(r - 1, c - 1); //  up left
+    if (r + 1 < this.rows && c - 1 >= 0 && !this.grid[r + 1][c - 1].tileType.FLAG && !this.grid[r + 1][c - 1].isOpen) this.openTile(r + 1, c - 1); //  down left
+    if (r - 1 >= 0 && c + 1 < this.cols && !this.grid[r - 1][c + 1].tileType.FLAG && !this.grid[r - 1][c + 1].isOpen) this.openTile(r - 1, c + 1); //  up right
+
+  }
+
   openNeighbours(r, c) {
     if (c + 1 < this.cols) this.grid[r][c + 1].isOpen = true
     if (c - 1 >= 0) this.grid[r][c - 1].isOpen = true
