@@ -11,9 +11,10 @@ export default class Controller {
   }
 
   init() {
+    this.view.initEventListenters(this.model.cols);
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
-    this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+    //this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
   }
   openTile(row, col) {

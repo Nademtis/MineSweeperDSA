@@ -4,6 +4,12 @@ export default class View {
         this.controller = controller;
     }
 
+    initEventListenters(cols){
+      this.handleClick(cols)
+      this.handleRightClick(cols)
+      this.smileyButton();
+    }
+
     displayGrid(rows, cols) {
         const board = document.querySelector("#boardContainer");
 
@@ -19,8 +25,7 @@ export default class View {
                 board.appendChild(tile);
             }
         }
-        this.handleClick(cols)
-        this.handleRightClick(cols)
+        
     }
     updateGrid(cols, grid) {
         const tiles = document.querySelectorAll(".tile")
@@ -98,6 +103,30 @@ export default class View {
             }
         })
     }
+
+    smileyButton(){ //NOTE FLAG DOES NOT WORK AFTER RESET
+
+      const boardContainer = document.querySelector("#boardContainer");
+      const smileyBtn = document.querySelector("#smileyBtn");
+
+      boardContainer.removeEventListener("click", this.handleClick);
+      boardContainer.removeEventListener("contextmenu", this.handleRightClick);
+
+
+      smileyBtn.addEventListener("click",(event)=>{
+
+        const tiles = document.querySelectorAll(".tile");
+        tiles.forEach(function(element){
+          element.remove();
+        })
+
+        this.controller.init();
+        console.log('helloBTN');
+
+      })
+    }
+
+
     addImageToDiv(div, imagePath) {
         div.style.backgroundImage = `url(${imagePath})`;
     }
