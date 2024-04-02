@@ -48,8 +48,6 @@ export default class Model {
       }
     }
     this.generateBombs();
-
-    console.table(this.grid);
   }
 
   generateBombs() {//CAN BE OPTIMIZED***
@@ -208,7 +206,6 @@ export default class Model {
     if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType.BOMB) count++; //  down left
     if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType.BOMB) count++; //  up right
 
-    console.log(count);
     return count;
   }
 
@@ -273,39 +270,41 @@ export default class Model {
         if (!this.grid[row][col].isOpen) {
           closedTilesLeft++
         }
-
-        //for 100%
-        let closedNeighbors = this.getClosedNeighbors(row, col);
-        if (closedNeighbors.length == this.getIntValue(this.grid[row][col].tileType)) {
-          closedNeighbors.forEach(tile => {
-            tile.tileType.bombProbability = 100;
-          });
-        }
-
-        //for 0%
-        let potentialBombNeighbors = this.getClosedNeighbors(row, col)
-        let confirmedBombAmount = 0
-        potentialBombNeighbors.forEach(tile => {
-          if (tile.bombProbability == 100) {
-            confirmedBombAmount++
-            potentialBombNeighbors.pop(tile)
+        if (this.grid[row][col].isOpen) {
+          //for 100%
+          let closedNeighbors = this.getClosedNeighbors(row, col);
+          if (closedNeighbors.length == this.getIntValue(this.grid[row][col].tileType)) {
+            closedNeighbors.forEach(tile => {
+              tile.tileType.bombProbability = 100;
+            });
           }
 
-        });
-        if (confirmedBombAmount == this.getIntValue(this.grid[row][col].tileType) && !this.grid[row][col].tileType.ZERO) {
+          //for 0%
+          let potentialBombNeighbors = this.getClosedNeighbors(row, col)
+          let confirmedBombAmount = 0
           potentialBombNeighbors.forEach(tile => {
-            tile.tileType.bombProbability = 0;
-          });
-        }
+            console.log(tile.bombProbability);
+            if (tile.tileType.bombProbability == 100) {
+              console.log("got em");
+              confirmedBombAmount++
+              potentialBombNeighbors.pop(tile)
+            }
 
+          });
+          if (confirmedBombAmount == this.getIntValue(this.grid[row][col].tileType)) {
+            potentialBombNeighbors.forEach(tile => {
+              tile.tileType.bombProbability = 0;
+            });
+          }
+
+        }
       }
     }
 
-    let bombsLeft = this.amountOfBombs - flagAmount;
-
+    /*let bombsLeft = this.amountOfBombs - flagAmount;
     let bombProbability = bombsLeft / closedTilesLeft * 100
     bombProbability = Math.round(bombProbability)
-    console.log(bombProbability);
+    console.log(bombProbability);*/
 
     return this.grid;
 
