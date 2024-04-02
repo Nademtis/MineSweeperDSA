@@ -28,9 +28,10 @@ export default class Model {
   startTimer() {
     this.timer = 0;
     this.timerInterval = setInterval(() => {
-      if (!this.timer == 999) {
         this.timer++;
-      }
+        if(this.timer == 999){
+            this.stopTimer();
+        }
     }, 1000)
   }
   stopTimer() {
