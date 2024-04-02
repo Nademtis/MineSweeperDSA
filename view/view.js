@@ -27,8 +27,12 @@ export default class View {
         for (let i = 0; i < tiles.length; i++) {
             const tileData = grid[Math.floor(i / cols)][i % cols]
             if (tileData.isOpen) {
-                if (tileData.tileType.BOMB) {
-                    this.addImageToDiv(tiles[i], "view/img/bombExplode.png");
+                if(tileData.tileType.WRONG_FLAG){
+                  this.addImageToDiv(tiles[i],"view/img/bombRedCross.png")
+                } else if (tileData.tileType.BOMB && !tileData.tileType.CLICKED_BOMB && !tileData.tileType.FLAG) {
+                    this.addImageToDiv(tiles[i], "view/img/bomb.png");
+                } else if (tileData.tileType.CLICKED_BOMB) {
+                  this.addImageToDiv(tiles[i], "view/img/bombExplode.png");
                 } else if (tileData.tileType.ZERO) {
                     this.addImageToDiv(tiles[i], "view/img/tileOpen.png");
                 } else if (tileData.tileType.ONE) {
@@ -97,4 +101,13 @@ export default class View {
     addImageToDiv(div, imagePath) {
         div.style.backgroundImage = `url(${imagePath})`;
     }
+
+    setUpTopBar(){//TODO
+      //when click start timer
+      //listen on smiley
+      //mine counter
+    }
+
+
+
 }

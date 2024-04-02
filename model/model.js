@@ -56,6 +56,11 @@ export default class Model {
 
   openTile(row, col) {
 
+    if(this.grid[row][col].tileType.BOMB){
+        this.grid[row][col].tileType.CLICKED_BOMB = true;
+        this.showBombs();
+    }
+
     if(!this.grid[row][col].tileType.FLAG){
         this.grid[row][col].isOpen = true;
         if (this.grid[row][col].tileType.ZERO) {
@@ -189,6 +194,23 @@ export default class Model {
     console.log(count);
     return count;
   }
+
+  showBombs(){
+    for (let row = 0; row < this.rows; row++) {
+        for (let col = 0; col < this.cols; col++) {
+          if (this.grid[row][col].tileType.BOMB) {
+                this.grid[row][col].isOpen = true;
+          }
+          if(!this.grid[row][col].tileType.BOMB && this.grid[row][col].tileType.FLAG){
+            this.grid[row][col].isOpen = true;
+            this.grid[row][col].tileType.WRONG_FLAG = true;
+          }
+        }
+      }
+  }
+
+
+
 }
 
 
