@@ -280,6 +280,24 @@ export default class Model {
           }
 
           //for 0%
+
+        let potentialBombNeighbors = this.getClosedNeighbors(row, col);
+        let confirmedBombTiles = [];
+        potentialBombNeighbors.forEach(tile => {
+            if (tile.tileType.bombProbability == 100) {
+                confirmedBombTiles.push(tile);
+            }
+        });
+
+        if (confirmedBombTiles.length == this.getIntValue(this.grid[row][col].tileType) ) {
+            potentialBombNeighbors.forEach(tile => {
+                if (!confirmedBombTiles.includes(tile)) {
+                    tile.tileType.bombProbability = 0;
+                }
+            });
+        }
+
+          /*
           let potentialBombNeighbors = this.getClosedNeighbors(row, col)
           let confirmedBombAmount = 0
           potentialBombNeighbors.forEach(tile => {
@@ -291,11 +309,11 @@ export default class Model {
             }
 
           });
-          if (confirmedBombAmount == this.getIntValue(this.grid[row][col].tileType)) {
+          if (confirmedBombAmount == this.getIntValue(this.grid[row][col].tileType)  && this.grid[row][col].tileType.bombProbability !=100  ) {
             potentialBombNeighbors.forEach(tile => {
               tile.tileType.bombProbability = 0;
             });
-          }
+          }*/
 
         }
       }

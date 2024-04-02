@@ -32,9 +32,13 @@ export default class Controller {
       //update view
       this.view.updateGrid(this.model.cols, newGrid);
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
     } else {
       this.handleTimer();
       this.openTile(row, col)
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
     }
