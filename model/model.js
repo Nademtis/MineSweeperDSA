@@ -40,11 +40,6 @@ export default class Model {
         this.timer = 999;
     }
 
-
-
-
-
-
   initGrid() {
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
@@ -217,6 +212,22 @@ export default class Model {
     return count;
   }
 
+  countNeighborTiles(r, c, tileType) {
+    let count = 0;
+  
+    if (c + 1 < this.cols && this.grid[r][c + 1].tileType === tileType) count++; // right
+    if (c - 1 >= 0 && this.grid[r][c - 1].tileType === tileType) count++; // left
+    if (r + 1 < this.rows && this.grid[r + 1][c].tileType === tileType) count++; // under
+    if (r - 1 >= 0 && this.grid[r - 1][c].tileType === tileType) count++; // over
+    if (r + 1 < this.rows && c + 1 < this.cols && this.grid[r + 1][c + 1].tileType === tileType) count++; // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && this.grid[r - 1][c - 1].tileType === tileType) count++; // upLeft
+    if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType === tileType) count++; // downLeft
+    if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType === tileType) count++; // upRight
+  
+    console.log(count);
+    return count;
+  }
+
   showBombs(){
     for (let row = 0; row < this.rows; row++) {
         for (let col = 0; col < this.cols; col++) {
@@ -231,7 +242,29 @@ export default class Model {
       }
   }
 
+calcProbabilities(){
+  let flagAmount=0;
+  let closedTilesLeft=0;
 
+  for (let row = 0; row < this.rows; row++) {
+    for (let col = 0; col < this.cols; col++) {
+        if (this.grid[row][col].tileType.FLAG) {
+          flagAmount++
+        }
+        if (!this.grid[row][col].isOpen) {
+          closedTilesLeft++
+        }
+        if (this.countNeighborTiles(row, col, tileType)) {
+          
+        }
+    }    
+  }
+  let bombsLeft = this.amountOfBombs - flagAmount;
+
+  let bombProbability = bombsLeft / closedTilesLeft * 100
+  bombProbability = Math.round(bombProbability)
+  console.log(bombProbability);
+}
 
 }
 

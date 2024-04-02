@@ -13,6 +13,8 @@ export default class Controller {
   init() {
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
+    this.view.showProbabilities()
+    this.model.calcProbabilities()
   }
   openTile(row, col) {
     let newGrid = this.model.openTile(row, col);

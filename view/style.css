@@ -23,10 +23,14 @@ body {
 }
 
 .tile {
+  display: flex;
   width: 2em;
   height: 2em;
   background-size: cover;
   image-rendering: pixelated;
-
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
+
+

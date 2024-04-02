@@ -106,6 +106,14 @@ export default class View {
       document.querySelector("#tempTimer").textContent = this.controller.getTime();
     }
 
+    showProbabilities(){
+        const tiles = document.querySelectorAll(".tile")
+
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].textContent = "100"
+        }
+    }
+
     setUpTopBar(){//TODO
       //when click start timer
       //listen on smiley
