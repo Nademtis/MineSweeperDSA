@@ -111,8 +111,8 @@ export default class View {
 
         for (let i = 0; i < tiles.length; i++) {
           const tileData = grid[Math.floor(i / cols)][i % cols]
-          tiles[i].textContent = tileData.bombProbability;
-          console.log(tileData.bombProbability);
+          tiles[i].textContent = tileData.tileType.bombProbability;
+          console.log(tileData.tileType.bombProbability);
            
         }
     }

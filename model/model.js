@@ -25,20 +25,20 @@ export default class Model {
   }
 
 
-    startTimer(){
-        this.timer = 0;
-        this.timerInterval = setInterval(()=>{
-            if(!this.timer==999){
-                this.timer++;
-            }
-        },1000)  
-    }
-    stopTimer() {
-        clearInterval(this.timerInterval);
-    }
-    resetTimer() {
-        this.timer = 0;
-    }
+  startTimer() {
+    this.timer = 0;
+    this.timerInterval = setInterval(() => {
+      if (!this.timer == 999) {
+        this.timer++;
+      }
+    }, 1000)
+  }
+  stopTimer() {
+    clearInterval(this.timerInterval);
+  }
+  resetTimer() {
+    this.timer = 0;
+  }
 
   initGrid() {
     for (let row = 0; row < this.rows; row++) {
@@ -52,17 +52,17 @@ export default class Model {
     console.table(this.grid);
   }
 
-  generateBombs(){//CAN BE OPTIMIZED***
+  generateBombs() {//CAN BE OPTIMIZED***
     let bombsLeft = this.amountOfBombs;
     //let cnt =0;
-    while(bombsLeft >= 0){
-        let randomRowIndex = Math.floor(Math.random()*this.rows)
-        let randomColIndex = Math.floor(Math.random()*this.cols)
-        if(!this.grid[randomRowIndex][randomColIndex].tileType.BOMB){
-            this.grid[randomRowIndex][randomColIndex].tileType.BOMB = true;
-            bombsLeft--
-        }
-        //cnt++;
+    while (bombsLeft >= 0) {
+      let randomRowIndex = Math.floor(Math.random() * this.rows)
+      let randomColIndex = Math.floor(Math.random() * this.cols)
+      if (!this.grid[randomRowIndex][randomColIndex].tileType.BOMB) {
+        this.grid[randomRowIndex][randomColIndex].tileType.BOMB = true;
+        bombsLeft--
+      }
+      //cnt++;
     }
     this.setTileValues();
     //console.log("times bombs placed"+cnt);
@@ -72,20 +72,20 @@ export default class Model {
 
   openTile(row, col) {
 
-    if(this.grid[row][col].tileType.BOMB){
-        this.grid[row][col].tileType.CLICKED_BOMB = true;
-        this.showBombs();
-        this.stopTimer();
+    if (this.grid[row][col].tileType.BOMB) {
+      this.grid[row][col].tileType.CLICKED_BOMB = true;
+      this.showBombs();
+      this.stopTimer();
     }
 
-    if(!this.grid[row][col].tileType.FLAG){
-        this.grid[row][col].isOpen = true;
-        if (this.grid[row][col].tileType.ZERO) {
+    if (!this.grid[row][col].tileType.FLAG) {
+      this.grid[row][col].isOpen = true;
+      if (this.grid[row][col].tileType.ZERO) {
 
         this.cascadeEmpties(row, col)
         this.openNeighbours(row, col)
 
-        }
+      }
     }
     return this.grid;
 
@@ -107,7 +107,7 @@ export default class Model {
     const tileValue = this.getIntValue(tileType)
     const flagAmount = this.countNeighborFlags(row, col)
     if (tileValue == flagAmount) {
-        this.openNeighbours(row,col)
+      this.openNeighbours(row, col)
     }
 
     return this.grid;
@@ -129,10 +129,10 @@ export default class Model {
     if (tileType.EIGHT) return 8;
   }
 
-  
 
 
- openNeighbours(r, c) {
+
+  openNeighbours(r, c) {
 
     if (c + 1 < this.cols && !this.grid[r][c + 1].tileType.FLAG && !this.grid[r][c + 1].isOpen) this.openTile(r, c + 1); // right
     if (c - 1 >= 0 && !this.grid[r][c - 1].tileType.FLAG && !this.grid[r][c - 1].isOpen) this.openTile(r, c - 1); // left
@@ -212,83 +212,104 @@ export default class Model {
     return count;
   }
 
-  countNeighborTiles(r, c, tileType) {
-    let count = 0;
-  
-    if (c + 1 < this.cols && this.grid[r][c + 1].tileType === tileType) count++; // right
-    if (c - 1 >= 0 && this.grid[r][c - 1].tileType === tileType) count++; // left
-    if (r + 1 < this.rows && this.grid[r + 1][c].tileType === tileType) count++; // under
-    if (r - 1 >= 0 && this.grid[r - 1][c].tileType === tileType) count++; // over
-    if (r + 1 < this.rows && c + 1 < this.cols && this.grid[r + 1][c + 1].tileType === tileType) count++; // downRight
-    if (r - 1 >= 0 && c - 1 >= 0 && this.grid[r - 1][c - 1].tileType === tileType) count++; // upLeft
-    if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType === tileType) count++; // downLeft
-    if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType === tileType) count++; // upRight
-  
-    console.log(count);
-    return count;
+
+
+  getNeighborTiles(r, c, tileType) {
+    let matchingCells = [];
+
+    if (c + 1 < this.cols && this.grid[r][c + 1].tileType === tileType) matchingCells.push(this.grid[r][c + 1]); // right
+    if (c - 1 >= 0 && this.grid[r][c - 1].tileType === tileType) matchingCells.push(this.grid[r][c - 1]); // left
+    if (r + 1 < this.rows && this.grid[r + 1][c].tileType === tileType) matchingCells.push(this.grid[r + 1][c]); // under
+    if (r - 1 >= 0 && this.grid[r - 1][c].tileType === tileType) matchingCells.push(this.grid[r - 1][c]); // over
+    if (r + 1 < this.rows && c + 1 < this.cols && this.grid[r + 1][c + 1].tileType === tileType) matchingCells.push(this.grid[r + 1][c + 1]); // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && this.grid[r - 1][c - 1].tileType === tileType) matchingCells.push(this.grid[r - 1][c - 1]); // upLeft
+    if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].tileType === tileType) matchingCells.push(this.grid[r + 1][c - 1]); // downLeft
+    if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].tileType === tileType) matchingCells.push(this.grid[r - 1][c + 1]); // upRight
+
+    console.log(matchingCells);
+    return matchingCells;
   }
 
-  getClosedNeighbors(r,c){
-    
+
+  getClosedNeighbors(r, c) {
     let closedNeighbors = [];
+
     if (c + 1 < this.cols && !this.grid[r][c + 1].isOpen) closedNeighbors.push(this.grid[r][c + 1]); // right
     if (c - 1 >= 0 && !this.grid[r][c - 1].isOpen) closedNeighbors.push(this.grid[r][c - 1]); // left
-    if (r + 1 < this.rows && !this.grid[r + 1][c].isOpen)closedNeighbors.push(this.grid[r+1][c]); // under
-    if (r - 1 >= 0 && !this.grid[r - 1][c].isOpen) closedNeighbors.push(this.grid[r-1][c ]); // over
-    if (r + 1 < this.rows && c + 1 < this.cols && !this.grid[r + 1][c + 1].isOpen) closedNeighbors.push(this.grid[r+1][c + 1]); // downRight
-    if (r - 1 >= 0 && c - 1 >= 0 && !this.grid[r - 1][c - 1].isOpen) closedNeighbors.push(this.grid[r-1][c - 1]); // upLeft
-    if (r + 1 < this.rows && c - 1 >= 0 && !this.grid[r + 1][c - 1].isOpen) closedNeighbors.push(this.grid[r+1][c - 1]); // downLeft
-    if (r - 1 >= 0 && c + 1 < this.cols && !this.grid[r - 1][c + 1].isOpen) closedNeighbors.push(this.grid[r-1][c + 1]); // upRight
-  
-    
+    if (r + 1 < this.rows && !this.grid[r + 1][c].isOpen) closedNeighbors.push(this.grid[r + 1][c]); // under
+    if (r - 1 >= 0 && !this.grid[r - 1][c].isOpen) closedNeighbors.push(this.grid[r - 1][c]); // over
+    if (r + 1 < this.rows && c + 1 < this.cols && !this.grid[r + 1][c + 1].isOpen) closedNeighbors.push(this.grid[r + 1][c + 1]); // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && !this.grid[r - 1][c - 1].isOpen) closedNeighbors.push(this.grid[r - 1][c - 1]); // upLeft
+    if (r + 1 < this.rows && c - 1 >= 0 && !this.grid[r + 1][c - 1].isOpen) closedNeighbors.push(this.grid[r + 1][c - 1]); // downLeft
+    if (r - 1 >= 0 && c + 1 < this.cols && !this.grid[r - 1][c + 1].isOpen) closedNeighbors.push(this.grid[r - 1][c + 1]); // upRight
+
     return closedNeighbors;
   }
 
 
-  showBombs(){
+  showBombs() {
     for (let row = 0; row < this.rows; row++) {
-        for (let col = 0; col < this.cols; col++) {
-          if (this.grid[row][col].tileType.BOMB) {
-                this.grid[row][col].isOpen = true;
-          }
-          if(!this.grid[row][col].tileType.BOMB && this.grid[row][col].tileType.FLAG){
-            this.grid[row][col].isOpen = true;
-            this.grid[row][col].tileType.WRONG_FLAG = true;
-          }
+      for (let col = 0; col < this.cols; col++) {
+        if (this.grid[row][col].tileType.BOMB) {
+          this.grid[row][col].isOpen = true;
+        }
+        if (!this.grid[row][col].tileType.BOMB && this.grid[row][col].tileType.FLAG) {
+          this.grid[row][col].isOpen = true;
+          this.grid[row][col].tileType.WRONG_FLAG = true;
         }
       }
+    }
   }
 
-calcProbabilities(){
-  let flagAmount=0;
-  let closedTilesLeft=0;
+  calcProbabilities() {
+    let flagAmount = 0;
+    let closedTilesLeft = 0;
 
-  for (let row = 0; row < this.rows; row++) {
-    for (let col = 0; col < this.cols; col++) {
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
         if (this.grid[row][col].tileType.FLAG) {
           flagAmount++
         }
         if (!this.grid[row][col].isOpen) {
           closedTilesLeft++
         }
+
+        //for 100%
         let closedNeighbors = this.getClosedNeighbors(row, col);
-        if (closedNeighbors.length==this.getIntValue(this.grid[row][col].tileType)) {
-            closedNeighbors.forEach(tile => {
-            tile.bombProbability =100;
+        if (closedNeighbors.length == this.getIntValue(this.grid[row][col].tileType)) {
+          closedNeighbors.forEach(tile => {
+            tile.tileType.bombProbability = 100;
           });
         }
-    }    
+
+        //for 0%
+        let potentialBombNeighbors = this.getClosedNeighbors(row, col)
+        let confirmedBombAmount = 0
+        potentialBombNeighbors.forEach(tile => {
+          if (tile.bombProbability == 100) {
+            confirmedBombAmount++
+            potentialBombNeighbors.pop(tile)
+          }
+
+        });
+        if (confirmedBombAmount == this.getIntValue(this.grid[row][col].tileType) && !this.grid[row][col].tileType.ZERO) {
+          potentialBombNeighbors.forEach(tile => {
+            tile.tileType.bombProbability = 0;
+          });
+        }
+
+      }
+    }
+
+    let bombsLeft = this.amountOfBombs - flagAmount;
+
+    let bombProbability = bombsLeft / closedTilesLeft * 100
+    bombProbability = Math.round(bombProbability)
+    console.log(bombProbability);
+
+    return this.grid;
+
   }
-
-  let bombsLeft = this.amountOfBombs - flagAmount;
-
-  let bombProbability = bombsLeft / closedTilesLeft * 100
-  bombProbability = Math.round(bombProbability)
-  console.log(bombProbability);
-
-  return this.grid;
-
-}
 
 }
 
