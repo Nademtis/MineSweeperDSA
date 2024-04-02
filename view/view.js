@@ -102,6 +102,10 @@ export default class View {
         div.style.backgroundImage = `url(${imagePath})`;
     }
 
+    updateTimerDisplay(){
+      document.querySelector("#tempTimer").textContent = this.controller.getTime();
+    }
+
     setUpTopBar(){//TODO
       //when click start timer
       //listen on smiley

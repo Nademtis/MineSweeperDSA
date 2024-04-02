@@ -24,6 +24,27 @@ export default class Model {
     //bombList?
   }
 
+
+    startTimer(){
+        this.timer = 999;
+        this.timerInterval = setInterval(()=>{
+            if(!this.timer==0){
+                this.timer--;
+            }
+        },1000)  
+    }
+    stopTimer() {
+        clearInterval(this.timerInterval);
+    }
+    resetTimer() {
+        this.timer = 999;
+    }
+
+
+
+
+
+
   initGrid() {
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
@@ -59,6 +80,7 @@ export default class Model {
     if(this.grid[row][col].tileType.BOMB){
         this.grid[row][col].tileType.CLICKED_BOMB = true;
         this.showBombs();
+        this.stopTimer();
     }
 
     if(!this.grid[row][col].tileType.FLAG){

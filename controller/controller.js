@@ -7,6 +7,7 @@ export default class Controller {
   constructor() {
     this.model = new Model(30, 16, 99);
     this.view = new View(this);
+    this.gameStarted = false;
   }
 
   init() {
@@ -29,7 +30,23 @@ export default class Controller {
       //update view
       this.view.updateGrid(this.model.cols, newGrid);
     }else{
+       this.handleTimer();
       this.openTile(row, col)
     }
   }
+
+  handleTimer(){
+    if(!this.gameStarted){
+        this.model.startTimer();
+        this.gameStarted = true;
+    }
+    setInterval(() => {
+        this.view.updateTimerDisplay();
+    }, 1000);
+  }
+
+  getTime(){
+    return this.model.timer;
+  }
+
 }
