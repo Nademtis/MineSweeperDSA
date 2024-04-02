@@ -106,11 +106,14 @@ export default class View {
       document.querySelector("#tempTimer").textContent = this.controller.getTime();
     }
 
-    showProbabilities(){
+    showProbabilities(grid,cols){
         const tiles = document.querySelectorAll(".tile")
 
         for (let i = 0; i < tiles.length; i++) {
-            tiles[i].textContent = "100"
+          const tileData = grid[Math.floor(i / cols)][i % cols]
+          tiles[i].textContent = tileData.bombProbability;
+          console.log(tileData.bombProbability);
+           
         }
     }
 

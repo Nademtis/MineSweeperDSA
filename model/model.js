@@ -26,10 +26,10 @@ export default class Model {
 
 
     startTimer(){
-        this.timer = 999;
+        this.timer = 0;
         this.timerInterval = setInterval(()=>{
-            if(!this.timer==0){
-                this.timer--;
+            if(!this.timer==999){
+                this.timer++;
             }
         },1000)  
     }
@@ -37,7 +37,7 @@ export default class Model {
         clearInterval(this.timerInterval);
     }
     resetTimer() {
-        this.timer = 999;
+        this.timer = 0;
     }
 
   initGrid() {
@@ -228,6 +228,23 @@ export default class Model {
     return count;
   }
 
+  getClosedNeighbors(r,c){
+    
+    let closedNeighbors = [];
+    if (c + 1 < this.cols && !this.grid[r][c + 1].isOpen) closedNeighbors.push(this.grid[r][c + 1]); // right
+    if (c - 1 >= 0 && !this.grid[r][c - 1].isOpen) closedNeighbors.push(this.grid[r][c - 1]); // left
+    if (r + 1 < this.rows && !this.grid[r + 1][c].isOpen)closedNeighbors.push(this.grid[r+1][c]); // under
+    if (r - 1 >= 0 && !this.grid[r - 1][c].isOpen) closedNeighbors.push(this.grid[r-1][c ]); // over
+    if (r + 1 < this.rows && c + 1 < this.cols && !this.grid[r + 1][c + 1].isOpen) closedNeighbors.push(this.grid[r+1][c + 1]); // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && !this.grid[r - 1][c - 1].isOpen) closedNeighbors.push(this.grid[r-1][c - 1]); // upLeft
+    if (r + 1 < this.rows && c - 1 >= 0 && !this.grid[r + 1][c - 1].isOpen) closedNeighbors.push(this.grid[r+1][c - 1]); // downLeft
+    if (r - 1 >= 0 && c + 1 < this.cols && !this.grid[r - 1][c + 1].isOpen) closedNeighbors.push(this.grid[r-1][c + 1]); // upRight
+  
+    
+    return closedNeighbors;
+  }
+
+
   showBombs(){
     for (let row = 0; row < this.rows; row++) {
         for (let col = 0; col < this.cols; col++) {
@@ -254,16 +271,23 @@ calcProbabilities(){
         if (!this.grid[row][col].isOpen) {
           closedTilesLeft++
         }
-        if (this.countNeighborTiles(row, col, tileType)) {
-          
+        let closedNeighbors = this.getClosedNeighbors(row, col);
+        if (closedNeighbors.length==this.getIntValue(this.grid[row][col].tileType)) {
+            closedNeighbors.forEach(tile => {
+            tile.bombProbability =100;
+          });
         }
     }    
   }
+
   let bombsLeft = this.amountOfBombs - flagAmount;
 
   let bombProbability = bombsLeft / closedTilesLeft * 100
   bombProbability = Math.round(bombProbability)
   console.log(bombProbability);
+
+  return this.grid;
+
 }
 
 }

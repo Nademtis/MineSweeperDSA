@@ -13,8 +13,8 @@ export default class Controller {
   init() {
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
-    this.view.showProbabilities()
-    this.model.calcProbabilities()
+    this.view.showProbabilities(this.model.calcProbabilities(),this.model.cols)
+    
   }
   openTile(row, col) {
     let newGrid = this.model.openTile(row, col);
@@ -34,6 +34,8 @@ export default class Controller {
     }else{
        this.handleTimer();
       this.openTile(row, col)
+    this.view.showProbabilities(this.model.calcProbabilities(),this.model.cols)
+
     }
   }
 
