@@ -45,7 +45,7 @@ export default class Model {
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
-        this.grid[row][col] = { tileType: new TileType(), isOpen: false }; //add isFlagged?
+        this.grid[row][col] = { tileType: new TileType(), isOpen: false, row:row, col:col }; //add isFlagged?
       }
     }
     this.generateBombs();
@@ -303,19 +303,28 @@ export default class Model {
           let closedNeighborsMaybe = this.getClosedNeighbors(row, col);
           let maybeMaybeTiles = [];
           closedNeighborsMaybe.forEach(tile => {
-            if (!tile.tileType.bombProbability == 0 && !tile.tileType.bombProbability == 100 || !tile.tileType.logical) {
+            if ( !tile.tileType.logical) {
               console.log('MAYBEtile for R: ' + row + ", C:" + col);
               maybeMaybeTiles.push(tile)
             }
           })
           console.log(confirmedBombTiles.length)
-          if (this.getIntValue(this.grid[row][col].tileType) + 1 == maybeMaybeTiles.length + confirmedBombTiles.length) {
+          if (this.getIntValue(this.grid[row][col].tileType) == maybeMaybeTiles.length) {
             console.log('MAYBEMAYBEMAYBEMAYBE');
             maybeMaybeTiles.forEach(tile => {
-              tile.tileType.bombProbability = 50
-              tile.tileType.logical = true
+                let  newBombProb = Math.round(100/maybeMaybeTiles.length);
+                if(newBombProb<tile.tileType.bombProbability && tile.tileType.logical){
+                    tile.tileType.bombProbability = newBombProb;
+                    tile.tileType.logical = true;
+                }
+              
+              
             })
           }
+          //hej
+          
+
+          
 
         }
       }
