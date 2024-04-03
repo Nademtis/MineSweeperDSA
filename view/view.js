@@ -147,6 +147,7 @@ export default class View {
           }
            
         }
+        this.updateGrid(cols,grid)
     }
 
     setUpTopBar(){//TODO

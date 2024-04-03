@@ -259,7 +259,7 @@ export default class Model {
     }
   }
 
-  calcProbabilities() {
+  calcProbabilities1() {
     let flagAmount = 0;
     let closedTilesLeft = 0;
 
@@ -351,6 +351,82 @@ export default class Model {
     return this.grid;
 
   }
+
+
+  calcProbabilities() {
+    let flagAmount = 0;
+    let closedTilesLeft = 0;
+
+    // Step 1: Count flags and closed tiles
+    for (let row = 0; row < this.rows; row++) {
+        for (let col = 0; col < this.cols; col++) {
+            if (this.grid[row][col].tileType.FLAG) {
+                flagAmount++;
+            }
+            if (!this.grid[row][col].isOpen) {
+                closedTilesLeft++;
+            }
+        }
+    }
+
+    // Step 2: Calculate probabilities for opened tiles
+    for (let row = 0; row < this.rows; row++) {
+        for (let col = 0; col < this.cols; col++) {
+            const tile = this.grid[row][col];
+            if (tile.isOpen) {
+                // Check if all closed neighbors are bombs
+                let closedNeighbors = this.getClosedNeighbors(row, col);
+                if (closedNeighbors.length === this.getIntValue(tile.tileType)) {
+                    closedNeighbors.forEach(neighbor => {
+                        neighbor.tileType.bombProbability = 100;
+                        tile.tileType.logical = true;
+                        
+                    });
+                }
+                // Check if all closed neighbors are safe
+                let potentialBombNeighbors = this.getClosedNeighbors(row, col);
+                let confirmedBombTiles = potentialBombNeighbors.filter(neighbor => neighbor.tileType.bombProbability === 100);
+                if (confirmedBombTiles.length === this.getIntValue(tile.tileType)) {
+                    potentialBombNeighbors.forEach(neighbor => {
+                        if (!confirmedBombTiles.includes(neighbor)) {
+                            neighbor.tileType.bombProbability = 0;
+                            tile.tileType.logical = true;
+                            
+                        }
+                    });
+                }
+                // Check for "maybe" tiles
+                let maybeMaybeTiles = potentialBombNeighbors.filter(neighbor => neighbor.tileType.bombProbability !== 0 && neighbor.tileType.bombProbability !== 100);
+                if (maybeMaybeTiles.length > 0) {
+                    maybeMaybeTiles.forEach(neighbor => {
+                        neighbor.tileType.bombProbability = Math.round(100 / maybeMaybeTiles.length);
+                        tile.tileType.logical = true;
+                    });
+                }
+            }
+        }
+    }
+
+
+
+
+    return this.grid;
+}
+
+
+autoPlay(){
+    for (let row = 0; row < this.rows; row++) {
+        for (let col = 0; col < this.cols; col++) {
+           if(this.grid[row][col].tileType.bombProbability == 0){
+            this.openTile(row,col)
+           }
+
+
+        }
+    }
+}
+
+
 
 }
 
