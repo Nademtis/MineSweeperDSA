@@ -24,6 +24,7 @@ export default class Controller {
   flagTile(row, col) {
     let newGrid = this.model.flagTile(row, col);
     this.view.updateGrid(this.model.cols, newGrid);
+    this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
   }
   handleLeftClick(row, col) {
     if (this.model.grid[row][col].isOpen) {
@@ -33,15 +34,10 @@ export default class Controller {
       //update view
       this.view.updateGrid(this.model.cols, newGrid);
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
     } else {
       this.handleTimer();
       this.openTile(row, col)
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-
     }
   }
 
