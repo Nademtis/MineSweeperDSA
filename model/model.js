@@ -296,6 +296,24 @@ export default class Model {
                     }
                 });
             }
+
+            //TESTING FOR 50 50 / MAYBETILES
+            let closedNeighborsMaybe = this.getClosedNeighbors(row,col);
+            let maybeMaybeTiles = [];
+            closedNeighborsMaybe.forEach(tile =>{
+                if(!tile.tileType.bombProbability==0 && !tile.tileType.bombProbability==100 || tile.tileType.bombProbability==null){
+                    console.log('MAYBEtile for R: '+row+", C:"+col);
+                    maybeMaybeTiles.push(tile)
+                }
+            })
+            console.log(confirmedBombTiles.length)
+            if(this.getIntValue(this.grid[row][col].tileType)+1==maybeMaybeTiles.length+confirmedBombTiles.length){
+                console.log('MAYBEMAYBEMAYBEMAYBE');
+                maybeMaybeTiles.forEach(tile =>{
+                    tile.tileType.bombProbability = 50
+                })
+            }
+
         }
       }
     }
