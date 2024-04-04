@@ -5,7 +5,7 @@ import View from "../view/view.js";
 
 export default class Controller {
   constructor() {
-    this.model = new Model(30, 16, 99);
+    this.model = new Model(30, 16, 75);
     this.view = new View(this);
     this.gameStarted = false;
   }
@@ -35,10 +35,11 @@ export default class Controller {
       this.view.updateGrid(this.model.cols, newGrid);
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
-      for (let index = 0; index < 100; index++) {
-        this.model.autoPlay();
-        
-      }
+
+      //only if enabled
+      //this.model.autoPlay();
+
+
 
     } else {
       this.handleTimer();
