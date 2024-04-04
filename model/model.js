@@ -243,6 +243,22 @@ export default class Model {
 
     return closedNeighbors;
   }
+  getOpenNeigbhors(r, c) {
+    let openNeighbors = [];
+
+    if (c + 1 < this.cols && this.grid[r][c + 1].isOpen) openNeighbors.push(this.grid[r][c + 1]); // right
+    if (c - 1 >= 0 && this.grid[r][c - 1].isOpen) openNeighbors.push(this.grid[r][c - 1]); // left
+    if (r + 1 < this.rows && this.grid[r + 1][c].isOpen) openNeighbors.push(this.grid[r + 1][c]); // under
+    if (r - 1 >= 0 && this.grid[r - 1][c].isOpen) openNeighbors.push(this.grid[r - 1][c]); // over
+    if (r + 1 < this.rows && c + 1 < this.cols && this.grid[r + 1][c + 1].isOpen) openNeighbors.push(this.grid[r + 1][c + 1]); // downRight
+    if (r - 1 >= 0 && c - 1 >= 0 && this.grid[r - 1][c - 1].isOpen) openNeighbors.push(this.grid[r - 1][c - 1]); // upLeft
+    if (r + 1 < this.rows && c - 1 >= 0 && this.grid[r + 1][c - 1].isOpen) openNeighbors.push(this.grid[r + 1][c - 1]); // downLeft
+    if (r - 1 >= 0 && c + 1 < this.cols && this.grid[r - 1][c + 1].isOpen) openNeighbors.push(this.grid[r - 1][c + 1]); // upRight
+
+    return openNeighbors;
+  }
+
+
 
 
   showBombs() {
@@ -395,14 +411,57 @@ export default class Model {
                         }
                     });
                 }
-                // Check for "maybe" tiles
-                let maybeMaybeTiles = potentialBombNeighbors.filter(neighbor => neighbor.tileType.bombProbability !== 0 && neighbor.tileType.bombProbability !== 100);
-                if (maybeMaybeTiles.length > 0) {
-                    maybeMaybeTiles.forEach(neighbor => {
-                        neighbor.tileType.bombProbability = Math.round(100 / maybeMaybeTiles.length);
-                        tile.tileType.logical = true;
+                
+                // Check for "unknown" tiles (50-50)
+                let closedNeigbors = this.getClosedNeighbors(row,col);
+                let bombTiles =[];
+                let safeTiles = [];
+                let unkTiles = [];
+                closedNeigbors.forEach(tile =>{
+                    if(tile.tileType.bombProbability==100){
+                        bombTiles.push(tile)
+                    }else if(tile.tileType.bombProbability==0){
+                        safeTiles.push(tile)
+                    }else if(tile.tileType.bombProbability == undefined){
+                        unkTiles.push(tile)
+                    }
+                })
+                if(bombTiles > 0 || safeTiles >0){
+                    continue;
+                }
+                    //TESTING
+                if (unkTiles.length == 2 ) {
+                    this.grid[row][col].tileType.unkTiles = unkTiles;
+                }
+                
+                if (unkTiles.length == 3 ) {
+                    let openNeighbors = this.getOpenNeigbhors(row, col);
+                    openNeighbors.forEach(tile => {
+                        if (tile.tileType.unkTiles && tile.tileType.unkTiles.length == 2) {
+                            // Check if the two unkTiles in the tile are also in the list of 3 unkTiles
+                            let matchCount = 0;
+                            for (let i = 0; i < 2; i++) {
+                                if (unkTiles.includes(tile.tileType.unkTiles[i])) {
+                                    matchCount++;
+                                }
+                            }
+                            if (matchCount == 2) {
+                                // Set the object that is the 3rd unkTile
+                                let thirdUnkTile = unkTiles.find(unkTile => !tile.tileType.unkTiles.includes(unkTile));
+                                // Now you can do whatever you need with thirdUnkTile
+                                // For example, you can set it to the tile object
+                                thirdUnkTile.tileType.bombProbability = 101;
+                            }
+                        }
                     });
                 }
+                
+
+
+
+
+
+
             }
         }
     }
