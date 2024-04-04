@@ -426,7 +426,7 @@ export default class Model {
                         unkTiles.push(tile)
                     }
                 })
-                if(bombTiles > 0 || safeTiles >0){
+                if(bombTiles.length > 0 || safeTiles.length >0){
                     continue;
                 }
                     //TESTING
