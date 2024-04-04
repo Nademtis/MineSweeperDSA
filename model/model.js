@@ -434,7 +434,7 @@ export default class Model {
                     this.grid[row][col].tileType.unkTiles = unkTiles;
                 }
                 
-                if (unkTiles.length == 3 && this.getIntValue(row,col)==2) {
+                if (unkTiles.length == 3 ) {
                     let openNeighbors = this.getOpenNeigbhors(row, col);
                     openNeighbors.forEach(tile => {
                         if (tile.tileType.unkTiles && tile.tileType.unkTiles.length == 2) {
@@ -450,7 +450,12 @@ export default class Model {
                                 let thirdUnkTile = unkTiles.find(unkTile => !tile.tileType.unkTiles.includes(unkTile));
                                 // Now you can do whatever you need with thirdUnkTile
                                 // For example, you can set it to the tile object
-                                thirdUnkTile.tileType.bombProbability = 101;
+                                if(this.getIntValue(row,col)==2){
+                                    thirdUnkTile.tileType.bombProbability = 101;
+                                }else if(this.getIntValue(row,col)==1){
+                                    thirdUnkTile.tileType.bombProbability = 102;
+                                }
+                                
                             }
                         }
                     });
