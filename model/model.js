@@ -426,11 +426,9 @@ export default class Model {
                         unkTiles.push(tile)
                     }
                 })
-                if(bombTiles.length > 0 || safeTiles.length >0){
-                    continue;
-                }
-                    //TESTING
-                if (unkTiles.length == 2 ) {
+                
+                 
+                if (unkTiles.length == 2 && this.getIntValue(this.grid[row][col].tileType) - bombTiles.length==1 ) {
                     this.grid[row][col].tileType.unkTiles = unkTiles;
                 }
                 
