@@ -391,9 +391,13 @@ autoPlay(){
         for (let col = 0; col < this.cols; col++) {
            if(this.grid[row][col].tileType.bombProbability == 0){
             this.openTile(row,col)
+           }else if(this.grid[row][col].tileType.bombProbability == 100){
+            this.grid[row][col].tileType.FLAG = true;
+           }else if(this.grid[row][col].tileType.bombProbability == 101){
+            this.grid[row][col].tileType.FLAG = true;
+           }else if(this.grid[row][col].tileType.bombProbability == 102){
+            this.openTile(row,col)
            }
-
-
         }
     }
 }

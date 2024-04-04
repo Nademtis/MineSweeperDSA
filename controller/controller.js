@@ -34,6 +34,12 @@ export default class Controller {
       //update view
       this.view.updateGrid(this.model.cols, newGrid);
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+
+      for (let index = 0; index < 100; index++) {
+        this.model.autoPlay();
+        
+      }
+
     } else {
       this.handleTimer();
       this.openTile(row, col)
