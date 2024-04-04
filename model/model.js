@@ -434,7 +434,7 @@ export default class Model {
                     this.grid[row][col].tileType.unkTiles = unkTiles;
                 }
                 
-                if (unkTiles.length == 3 ) {
+                if (unkTiles.length == 3 && this.getIntValue(row,col)==2) {
                     let openNeighbors = this.getOpenNeigbhors(row, col);
                     openNeighbors.forEach(tile => {
                         if (tile.tileType.unkTiles && tile.tileType.unkTiles.length == 2) {
