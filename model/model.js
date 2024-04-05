@@ -396,25 +396,23 @@ export default class Model {
     let didSomth = false
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
-        if (this.grid[row][col].tileType.bombProbability == 0) {
+        if (this.grid[row][col].tileType.bombProbability == 0 && !this.grid[row][col].isOpen) {
           this.openTile(row, col)
           didSomth = true
           
-        } else if (this.grid[row][col].tileType.bombProbability == 100) {
+        } else if (this.grid[row][col].tileType.bombProbability == 100 && !this.grid[row][col].isOpen) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
-          
+      
 
-        } else if (this.grid[row][col].tileType.bombProbability == 101) {
+        } else if (this.grid[row][col].tileType.bombProbability == 101 && !this.grid[row][col].isOpen) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
+           
 
-
-        } else if (this.grid[row][col].tileType.bombProbability == 102) {
+        } else if (this.grid[row][col].tileType.bombProbability == 102 && !this.grid[row][col].isOpen) {
           this.openTile(row, col)
           didSomth = true
-          
-
         }
       }
     }
@@ -422,14 +420,11 @@ export default class Model {
     if (!didSomth) {
         // If no action was taken, terminate the recursion
         console.log("No action taken, stopping autoplay");
-       return this.grid;
+       return false;
       } else {
         // If an action was taken, continue autoplay after a delay of 1 second
-        this.controller.updateView(this.grid)
-        setTimeout(() => {
-            
-            this.autoPlay(this.grid);
-        }, 500); 
+        return this.grid;
+        
       }
     }
 }

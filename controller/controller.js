@@ -53,9 +53,20 @@ export default class Controller {
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
 
-      
-       
-        this.view.updateGrid(this.model.cols, this.model.autoPlay(this.model.grid));
+      /*let running = true;
+        while (running) {
+            
+            const updatedGrid = this.model.autoPlay();
+            console.log("ug"+updatedGrid[0][0]);
+            this.view.updateGrid(this.model.cols, updatedGrid);
+
+            // Check if autoPlay returned false, indicating no action was taken
+            if (!updatedGrid) {
+                console.log("No action taken, stopping autoplay");
+                running = false;
+            }
+           
+        }*/
       
 
 
