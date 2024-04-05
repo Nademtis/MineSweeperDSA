@@ -74,6 +74,7 @@ export default class Model {
 
     if (this.grid[row][col].tileType.BOMB) {
       this.grid[row][col].tileType.CLICKED_BOMB = true;
+      this.controller.killSmiley()
       this.showBombs();
       this.stopTimer();
     }

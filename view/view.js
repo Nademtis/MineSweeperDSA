@@ -7,8 +7,8 @@ export default class View {
     initEventListenters(cols) {
         const smileyBtn = document.querySelector("#smileyBtn");
         const boardContainer = document.querySelector("#boardContainer")
-        smileyBtn.addEventListener("click", () => this.resetGame())
 
+        smileyBtn.addEventListener("click", () => this.resetGame())
         boardContainer.addEventListener("click", (event) => this.handleClick(cols, event));
         boardContainer.addEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
 
@@ -72,7 +72,9 @@ export default class View {
                     this.addImageToDiv(tiles[i], "view/img/tileClosed.png");
                 }
             }
+
         }
+
     }
 
     handleClick(cols, event) {
@@ -107,27 +109,20 @@ export default class View {
 
     }
 
-    resetGame() { //NOTE FLAG DOES NOT WORK AFTER RESET
-
-        const boardContainer = document.querySelector("#boardContainer");
+    resetGame() {
+        //const boardContainer = document.querySelector("#boardContainer");
         const smileyBtn = document.querySelector("#smileyBtn");
-        //smileyBtn.removeEventListener("click", () => this.resetGame);
-        //boardContainer.removeEventListener("click", (event) => this.handleClick(cols, event));
-        //boardContainer.removeEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
-
-
+        this.addImageToDiv(smileyBtn, "view/img/faceHappy.png");
 
         const tiles = document.querySelectorAll(".tile");
         tiles.forEach(function (element) {
             element.remove();
         })
-
         this.controller.reset();
-        console.log('helloBTN');
-
-
-
-
+    }
+    killSmiley() {
+        const smileyBtn = document.querySelector("#smileyBtn");
+        this.addImageToDiv(smileyBtn, "view/img/faceDead.png");
     }
 
 
@@ -154,27 +149,27 @@ export default class View {
             this.addImageToDiv(hundredNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
         }
     }
-    updateRemainingBombDisplay(){
+    updateRemainingBombDisplay() {
         let remainingBombAmount = this.controller.getRemainingBombs()
         let oneNum = document.querySelector("#bombLeft1Num")
         let tenNum = document.querySelector("#bombLeft10Num")
 
         let bombAmountString = remainingBombAmount.toString()
 
-        if (remainingBombAmount < 10){
+        if (remainingBombAmount < 10) {
             this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
-        }else if (remainingBombAmount >= 10){
+        } else if (remainingBombAmount >= 10) {
             this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(1) + ".png");
             this.addImageToDiv(tenNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
         }
-        
+
     }
     resetTimer() {
         let oneNum = document.querySelector("#timer1Num")
         let tenNum = document.querySelector("#timer10Num")
         let hundredNum = document.querySelector("#timer100Num")
         this.addImageToDiv(oneNum, "view/img/topbarNum" + 0 + ".png");
-        this.addImageToDiv(tenNum, "view/img/topbarNum" + 0 +".png");
+        this.addImageToDiv(tenNum, "view/img/topbarNum" + 0 + ".png");
         this.addImageToDiv(hundredNum, "view/img/topbarNum" + 0 + ".png");
     }
 
@@ -199,6 +194,6 @@ export default class View {
         //mine counter
     }
 
-
+    
 
 }

@@ -98,5 +98,8 @@ export default class Controller {
   getRemainingBombs(){
     return this.model.getRemainingBombsBasedOnFlag()
   }
+  killSmiley(){
+    this.view.killSmiley()
+  }
 
 }
