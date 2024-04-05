@@ -6,6 +6,7 @@ import View from "../view/view.js";
 export default class Controller {
   constructor() {
     this.gameStarted = false;
+    this.gameEnded = false
   }
 
   init() {
@@ -18,10 +19,9 @@ export default class Controller {
     this.view.updateRemainingBombDisplay()
     this.model.resetTimer();
     this.model.stopTimer();
-    //this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
-
   }
   reset(){
+    this.gameEnded = false
     this.model = new Model(30, 16, 75, this);
     this.view = new View(this);
     this.gameStarted = false;
@@ -42,6 +42,7 @@ export default class Controller {
     this.view.updateGrid(this.model.cols, newGrid);
     this.view.updateRemainingBombDisplay()
     this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
+    this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
   }
   handleLeftClick(row, col) {
     if (this.model.grid[row][col].isOpen) {
@@ -50,6 +51,7 @@ export default class Controller {
 
       //update view
       this.view.updateGrid(this.model.cols, newGrid);
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
 
@@ -74,6 +76,7 @@ export default class Controller {
     } else {
       this.handleTimer();
       this.openTile(row, col)
+      this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
     }
   }

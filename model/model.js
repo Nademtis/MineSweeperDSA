@@ -275,6 +275,7 @@ export default class Model {
         }
       }
     }
+    this.controller.gameEnded = true
   }
   getRemainingBombsBasedOnFlag() {
     let flagAmount = 0
@@ -344,10 +345,10 @@ export default class Model {
                 if (matchCount == 2) {
                   let thirdUnkTile = unkTiles.find(unkTile => !tile.tileType.unkTiles.includes(unkTile));
                   if (this.grid[row][col].tileType.TWO && bombTiles.length == 0) {
-                    thirdUnkTile.tileType.bombProbability = 101;
+                    thirdUnkTile.tileType.bombProbability = 100;
                     console.log('101');
                   } else if (this.grid[row][col].tileType.ONE) {
-                    thirdUnkTile.tileType.bombProbability = 102;
+                    thirdUnkTile.tileType.bombProbability = 0;
                     console.log('102');
                   }
                 }

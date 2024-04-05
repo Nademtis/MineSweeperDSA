@@ -12,9 +12,29 @@ export default class View {
         boardContainer.addEventListener("click", (event) => this.handleClick(cols, event));
         boardContainer.addEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
 
+        // Add event listener for mouse down
+        boardContainer.addEventListener("mousedown", (event) => {
+            if (this.controller.gameEnded)return
+            if (event.button === 0) { // Check if left mouse button is pressed
+                // Change smiley image to scared
+                this.changeSmileyImage("view/img/faceScared.png");
+            }
+        });
+
+        // Add event listener for mouse up
+        boardContainer.addEventListener("mouseup", (event) => {
+            if (this.controller.gameEnded)return
+            if (event.button === 0) { // Check if left mouse button is released
+                // Change smiley image back to happy
+                this.changeSmileyImage("view/img/faceHappy.png");
+            }
+        });
 
     }
-
+    changeSmileyImage(imagePath) {
+        const smileyBtn = document.querySelector("#smileyBtn");
+        this.addImageToDiv(smileyBtn, imagePath);
+    }
     displayGrid(rows, cols) {
         const board = document.querySelector("#boardContainer");
 
@@ -174,6 +194,7 @@ export default class View {
     }
 
     showProbabilities(grid, cols) {
+        if (this.controller.gameEnded) return
         const tiles = document.querySelectorAll(".tile")
 
         for (let i = 0; i < tiles.length; i++) {
@@ -194,6 +215,6 @@ export default class View {
         //mine counter
     }
 
-    
+
 
 }
