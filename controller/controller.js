@@ -28,6 +28,7 @@ export default class Controller {
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
     this.model.resetTimer();
+    this.view.resetTimer()
     this.model.stopTimer();
   }
   openTile(row, col) {

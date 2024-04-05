@@ -154,6 +154,14 @@ export default class View {
             this.addImageToDiv(hundredNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
         }
     }
+    resetTimer() {
+        let oneNum = document.querySelector("#timer1Num")
+        let tenNum = document.querySelector("#timer10Num")
+        let hundredNum = document.querySelector("#timer100Num")
+        this.addImageToDiv(oneNum, "view/img/topbarNum" + 0 + ".png");
+        this.addImageToDiv(tenNum, "view/img/topbarNum" + 0 +".png");
+        this.addImageToDiv(hundredNum, "view/img/topbarNum" + 0 + ".png");
+    }
 
     showProbabilities(grid, cols) {
         const tiles = document.querySelectorAll(".tile")
