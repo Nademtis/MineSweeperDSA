@@ -276,6 +276,7 @@ export default class Model {
     }
   }
 
+
   calcProbabilities() {
     let flagAmount = 0;
     let closedTilesLeft = 0;
@@ -339,7 +340,7 @@ export default class Model {
             this.grid[row][col].tileType.unkTiles = unkTiles;
           }
 
-          if (unkTiles.length == 3) {
+          if (unkTiles.length == 3 ) {
 
             let openNeighbors = this.getOpenNeigbhors(row, col);
             openNeighbors.forEach(tile => {
@@ -357,7 +358,7 @@ export default class Model {
                   let thirdUnkTile = unkTiles.find(unkTile => !tile.tileType.unkTiles.includes(unkTile));
                   // Now you can do whatever you need with thirdUnkTile
                   // For example, you can set it to the tile object
-                  if (this.grid[row][col].tileType.TWO) {
+                  if (this.grid[row][col].tileType.TWO && bombTiles.length == 0) {
                     thirdUnkTile.tileType.bombProbability = 101;
                     console.log('101');
                   } else if (this.grid[row][col].tileType.ONE) {
