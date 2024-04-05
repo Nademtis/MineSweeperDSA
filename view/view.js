@@ -4,15 +4,15 @@ export default class View {
         this.controller = controller;
     }
 
-    initEventListenters(cols){
-      const smileyBtn = document.querySelector("#smileyBtn");
-      const boardContainer = document.querySelector("#boardContainer")
-      smileyBtn.addEventListener("click",() => this.resetGame())
+    initEventListenters(cols) {
+        const smileyBtn = document.querySelector("#smileyBtn");
+        const boardContainer = document.querySelector("#boardContainer")
+        smileyBtn.addEventListener("click", () => this.resetGame())
 
-      boardContainer.addEventListener("click", (event) => this.handleClick(cols, event));
-      boardContainer.addEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
+        boardContainer.addEventListener("click", (event) => this.handleClick(cols, event));
+        boardContainer.addEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
 
-      
+
     }
 
     displayGrid(rows, cols) {
@@ -30,19 +30,19 @@ export default class View {
                 board.appendChild(tile);
             }
         }
-        
+
     }
     updateGrid(cols, grid) {
         const tiles = document.querySelectorAll(".tile")
         for (let i = 0; i < tiles.length; i++) {
             const tileData = grid[Math.floor(i / cols)][i % cols]
             if (tileData.isOpen) {
-                if(tileData.tileType.WRONG_FLAG){
-                  this.addImageToDiv(tiles[i],"view/img/bombRedCross.png")
+                if (tileData.tileType.WRONG_FLAG) {
+                    this.addImageToDiv(tiles[i], "view/img/bombRedCross.png")
                 } else if (tileData.tileType.BOMB && !tileData.tileType.CLICKED_BOMB && !tileData.tileType.FLAG) {
                     this.addImageToDiv(tiles[i], "view/img/bomb.png");
                 } else if (tileData.tileType.CLICKED_BOMB) {
-                  this.addImageToDiv(tiles[i], "view/img/bombExplode.png");
+                    this.addImageToDiv(tiles[i], "view/img/bombExplode.png");
                 } else if (tileData.tileType.ZERO) {
                     this.addImageToDiv(tiles[i], "view/img/tileOpen.png");
                 } else if (tileData.tileType.ONE) {
@@ -75,9 +75,9 @@ export default class View {
         }
     }
 
-    handleClick(cols,event) {
+    handleClick(cols, event) {
         //if tile is open dont send request to controller
-        
+
         let tile = event.target
         let tiles = document.querySelectorAll("#boardContainer .tile")
 
@@ -88,10 +88,10 @@ export default class View {
         if (row >= 0 && col >= 0) {
             this.controller.handleLeftClick(row, col)
         }
-  
+
     }
 
-    handleRightClick(cols,event) {
+    handleRightClick(cols, event) {
         //if tile is open dont send request to controller
         event.preventDefault();
         let tile = event.target
@@ -104,29 +104,29 @@ export default class View {
         if (row >= 0 && col >= 0) {
             this.controller.flagTile(row, col)
         }
-        
+
     }
 
-    resetGame(){ //NOTE FLAG DOES NOT WORK AFTER RESET
+    resetGame() { //NOTE FLAG DOES NOT WORK AFTER RESET
 
-      const boardContainer = document.querySelector("#boardContainer");
-      const smileyBtn = document.querySelector("#smileyBtn");
-      //smileyBtn.removeEventListener("click", () => this.resetGame);
-      //boardContainer.removeEventListener("click", (event) => this.handleClick(cols, event));
-      //boardContainer.removeEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
+        const boardContainer = document.querySelector("#boardContainer");
+        const smileyBtn = document.querySelector("#smileyBtn");
+        //smileyBtn.removeEventListener("click", () => this.resetGame);
+        //boardContainer.removeEventListener("click", (event) => this.handleClick(cols, event));
+        //boardContainer.removeEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
 
 
-  
+
         const tiles = document.querySelectorAll(".tile");
-        tiles.forEach(function(element){
-          element.remove();
+        tiles.forEach(function (element) {
+            element.remove();
         })
 
         this.controller.reset();
         console.log('helloBTN');
-        
 
-      
+
+
 
     }
 
@@ -135,29 +135,53 @@ export default class View {
         div.style.backgroundImage = `url(${imagePath})`;
     }
 
-    updateTimerDisplay(){
-      document.querySelector("#tempTimer").textContent = this.controller.getTime();
+    updateTimerDisplay() {
+        let time = this.controller.getTime()
+        let oneNum = document.querySelector("#timer1Num")
+        let tenNum = document.querySelector("#timer10Num")
+        let hundredNum = document.querySelector("#timer100Num")
+
+        let timeString = time.toString()
+
+        if (time < 10) {//update one
+            this.addImageToDiv(oneNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
+        } else if (time >= 10 && time < 100) {//update oneNum & tenNum
+            this.addImageToDiv(oneNum, "view/img/topbarNum" + timeString.charAt(1) + ".png");
+            this.addImageToDiv(tenNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
+        } else if (time >= 100) {//update oneNum & tenNum & hundredNum
+            this.addImageToDiv(oneNum, "view/img/topbarNum" + timeString.charAt(2) + ".png");
+            this.addImageToDiv(tenNum, "view/img/topbarNum" + timeString.charAt(1) + ".png");
+            this.addImageToDiv(hundredNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
+        }
+    }
+    resetTimer() {
+        let oneNum = document.querySelector("#timer1Num")
+        let tenNum = document.querySelector("#timer10Num")
+        let hundredNum = document.querySelector("#timer100Num")
+        this.addImageToDiv(oneNum, "view/img/topbarNum" + 0 + ".png");
+        this.addImageToDiv(tenNum, "view/img/topbarNum" + 0 +".png");
+        this.addImageToDiv(hundredNum, "view/img/topbarNum" + 0 + ".png");
     }
 
-    showProbabilities(grid,cols){
+    showProbabilities(grid, cols) {
         const tiles = document.querySelectorAll(".tile")
 
         for (let i = 0; i < tiles.length; i++) {
-          const tileData = grid[Math.floor(i / cols)][i % cols]
-          tiles[i].textContent = tileData.tileType.bombProbability;
-          
-          if(tileData.isOpen){
-            tiles[i].textContent = "";
-          }
-           
+            const tileData = grid[Math.floor(i / cols)][i % cols]
+            tiles[i].textContent = tileData.tileType.bombProbability;
+
+            if (tileData.isOpen) {
+                tiles[i].textContent = "";
+            }
+
         }
-        this.updateGrid(cols,grid)
+        this.updateGrid(cols, grid)
     }
 
-    setUpTopBar(){//TODO
-      //when click start timer
-      //listen on smiley
-      //mine counter
+    setUpTopBar() {//TODO
+        //when click start timer
+        //listen on smiley
+        //mine counter
     }
 
 
