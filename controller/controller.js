@@ -5,17 +5,30 @@ import View from "../view/view.js";
 
 export default class Controller {
   constructor() {
-    this.model = new Model(30, 16, 75);
-    this.view = new View(this);
     this.gameStarted = false;
   }
 
   init() {
+    this.model = new Model(30, 16, 75);
+    this.view = new View(this);
+
     this.view.initEventListenters(this.model.cols);
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
+    this.model.resetTimer();
+    this.model.stopTimer();
     //this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
+  }
+  reset(){
+    this.model = new Model(30, 16, 75);
+    this.view = new View(this);
+    this.gameStarted = false;
+    //this.view.initEventListenters(this.model.cols);
+    this.model.initGrid();
+    this.view.displayGrid(this.model.rows, this.model.cols);
+    this.model.resetTimer();
+    this.model.stopTimer();
   }
   openTile(row, col) {
     let newGrid = this.model.openTile(row, col);

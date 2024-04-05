@@ -5,9 +5,14 @@ export default class View {
     }
 
     initEventListenters(cols){
-      this.handleClick(cols)
-      this.handleRightClick(cols)
-      this.smileyButton();
+      const smileyBtn = document.querySelector("#smileyBtn");
+      const boardContainer = document.querySelector("#boardContainer")
+      smileyBtn.addEventListener("click",() => this.resetGame())
+
+      boardContainer.addEventListener("click", (event) => this.handleClick(cols, event));
+      boardContainer.addEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
+
+      
     }
 
     displayGrid(rows, cols) {
@@ -70,60 +75,59 @@ export default class View {
         }
     }
 
-    handleClick(cols) {
+    handleClick(cols,event) {
         //if tile is open dont send request to controller
-        document.querySelector("#boardContainer").addEventListener("click", (event) => {
-            let tile = event.target
-            let tiles = document.querySelectorAll("#boardContainer .tile")
+        
+        let tile = event.target
+        let tiles = document.querySelectorAll("#boardContainer .tile")
 
-            let index = Array.from(tiles).indexOf(tile)
-            let row = Math.floor(index / cols)
-            let col = Math.floor(index % cols)
+        let index = Array.from(tiles).indexOf(tile)
+        let row = Math.floor(index / cols)
+        let col = Math.floor(index % cols)
 
-            if (row >= 0 && col >= 0) {
-                this.controller.handleLeftClick(row, col)
-            }
-        })
+        if (row >= 0 && col >= 0) {
+            this.controller.handleLeftClick(row, col)
+        }
+  
     }
 
-    handleRightClick(cols) {
+    handleRightClick(cols,event) {
         //if tile is open dont send request to controller
+        event.preventDefault();
+        let tile = event.target
+        let tiles = document.querySelectorAll("#boardContainer .tile")
 
-        document.querySelector("#boardContainer").addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            let tile = event.target
-            let tiles = document.querySelectorAll("#boardContainer .tile")
+        let index = Array.from(tiles).indexOf(tile)
+        let row = Math.floor(index / cols)
+        let col = Math.floor(index % cols)
 
-            let index = Array.from(tiles).indexOf(tile)
-            let row = Math.floor(index / cols)
-            let col = Math.floor(index % cols)
-
-            if (row >= 0 && col >= 0) {
-                this.controller.flagTile(row, col)
-            }
-        })
+        if (row >= 0 && col >= 0) {
+            this.controller.flagTile(row, col)
+        }
+        
     }
 
-    smileyButton(){ //NOTE FLAG DOES NOT WORK AFTER RESET
+    resetGame(){ //NOTE FLAG DOES NOT WORK AFTER RESET
 
       const boardContainer = document.querySelector("#boardContainer");
       const smileyBtn = document.querySelector("#smileyBtn");
+      //smileyBtn.removeEventListener("click", () => this.resetGame);
+      //boardContainer.removeEventListener("click", (event) => this.handleClick(cols, event));
+      //boardContainer.removeEventListener("contextmenu", (event) => this.handleRightClick(cols, event));
 
-      boardContainer.removeEventListener("click", this.handleClick);
-      boardContainer.removeEventListener("contextmenu", this.handleRightClick);
 
-
-      smileyBtn.addEventListener("click",(event)=>{
-
+  
         const tiles = document.querySelectorAll(".tile");
         tiles.forEach(function(element){
           element.remove();
         })
 
-        this.controller.init();
+        this.controller.reset();
         console.log('helloBTN');
+        
 
-      })
+      
+
     }
 
 

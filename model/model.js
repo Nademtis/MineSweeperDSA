@@ -42,6 +42,7 @@ export default class Model {
   }
 
   initGrid() {
+    this.grid = [];
     for (let row = 0; row < this.rows; row++) {
       this.grid[row] = [];
       for (let col = 0; col < this.cols; col++) {
