@@ -178,6 +178,8 @@ export default class View {
 
         if (remainingBombAmount < 10) {
             this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
+            this.addImageToDiv(tenNum, "view/img/topbarNum0.png");
+
         } else if (remainingBombAmount >= 10) {
             this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(1) + ".png");
             this.addImageToDiv(tenNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
