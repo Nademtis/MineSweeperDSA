@@ -52,7 +52,7 @@ export default class Controller {
 
       
        
-        //this.view.updateGrid(this.model.cols, this.model.autoPlay(this.model.grid));
+        this.view.updateGrid(this.model.cols, this.model.autoPlay(this.model.grid));
       
 
 

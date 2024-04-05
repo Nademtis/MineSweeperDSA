@@ -388,21 +388,21 @@ export default class Model {
         if (this.grid[row][col].tileType.bombProbability == 0) {
           this.openTile(row, col)
           didSomth = true
-          this.controller.updateView(this.grid)
+          
         } else if (this.grid[row][col].tileType.bombProbability == 100) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
-          this.controller.updateView(this.grid)
+          
 
         } else if (this.grid[row][col].tileType.bombProbability == 101) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
-          this.controller.updateView(this.grid)
+
 
         } else if (this.grid[row][col].tileType.bombProbability == 102) {
           this.openTile(row, col)
           didSomth = true
-          this.controller.updateView(this.grid)
+          
 
         }
       }
@@ -414,8 +414,10 @@ export default class Model {
        return this.grid;
       } else {
         // If an action was taken, continue autoplay after a delay of 1 second
+        this.controller.updateView(this.grid)
         setTimeout(() => {
-          this.autoPlay(this.grid);
+            
+            this.autoPlay(this.grid);
         }, 500); 
       }
     }
