@@ -8,4 +8,4 @@ left click tile to reveal the tile
 
 right click tile to flag the tile
 
-after flagging you can left click a numbered tile to reveal remaing neighbors
+after flagging you can left click a numbered tile to reveal remaining neighbors
