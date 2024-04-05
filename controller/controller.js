@@ -15,6 +15,7 @@ export default class Controller {
     this.view.initEventListenters(this.model.cols);
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
+    this.view.updateRemainingBombDisplay()
     this.model.resetTimer();
     this.model.stopTimer();
     //this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
@@ -28,6 +29,7 @@ export default class Controller {
     this.model.initGrid();
     this.view.displayGrid(this.model.rows, this.model.cols);
     this.model.resetTimer();
+    this.view.updateRemainingBombDisplay()
     this.view.resetTimer()
     this.model.stopTimer();
   }
@@ -38,6 +40,7 @@ export default class Controller {
   flagTile(row, col) {
     let newGrid = this.model.flagTile(row, col);
     this.view.updateGrid(this.model.cols, newGrid);
+    this.view.updateRemainingBombDisplay()
     this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
   }
   handleLeftClick(row, col) {
@@ -80,6 +83,9 @@ export default class Controller {
 
   getTime() {
     return this.model.timer;
+  }
+  getRemainingBombs(){
+    return this.model.getRemainingBombsBasedOnFlag()
   }
 
 }
