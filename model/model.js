@@ -275,7 +275,18 @@ export default class Model {
       }
     }
   }
-
+  getRemainingBombsBasedOnFlag() {
+    let flagAmount = 0
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        if (this.grid[row][col].tileType.FLAG) {
+          flagAmount++
+        }
+      }
+    }
+    //amountOfBombs - amountOfFlag
+    return this.amountOfBombs - flagAmount
+  }
 
   calcProbabilities() {
     let flagAmount = 0;
@@ -340,7 +351,7 @@ export default class Model {
             this.grid[row][col].tileType.unkTiles = unkTiles;
           }
 
-          if (unkTiles.length == 3 ) {
+          if (unkTiles.length == 3) {
 
             let openNeighbors = this.getOpenNeigbhors(row, col);
             openNeighbors.forEach(tile => {

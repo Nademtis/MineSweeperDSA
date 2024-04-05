@@ -154,6 +154,21 @@ export default class View {
             this.addImageToDiv(hundredNum, "view/img/topbarNum" + timeString.charAt(0) + ".png");
         }
     }
+    updateRemainingBombDisplay(){
+        let remainingBombAmount = this.controller.getRemainingBombs()
+        let oneNum = document.querySelector("#bombLeft1Num")
+        let tenNum = document.querySelector("#bombLeft10Num")
+
+        let bombAmountString = remainingBombAmount.toString()
+
+        if (remainingBombAmount < 10){
+            this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
+        }else if (remainingBombAmount >= 10){
+            this.addImageToDiv(oneNum, "view/img/topbarNum" + bombAmountString.charAt(1) + ".png");
+            this.addImageToDiv(tenNum, "view/img/topbarNum" + bombAmountString.charAt(0) + ".png");
+        }
+        
+    }
     resetTimer() {
         let oneNum = document.querySelector("#timer1Num")
         let tenNum = document.querySelector("#timer10Num")
