@@ -1,3 +1,5 @@
+![image](https://github.com/Nademtis/MineSweeperDSA/assets/115067498/47ac1108-c87f-442d-a7c7-0fd1f110d7b4)
+
 # Deployed version:
 https://nademtis.github.io/MineSweeperDSA/
 
