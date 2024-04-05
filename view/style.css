@@ -11,9 +11,45 @@ body {
   justify-content: center;
   height: 100vh;
 }
-
+.smiley {
+  background-image: url("./img/faceHappy.png");
+  background-size: cover;
+  image-rendering: pixelated;
+  width: 3em;
+  height: 3em;
+}
+.bombsLeftContainer {
+  background-image: url("./img/bombsLeftContainer.png");
+  background-size: contain;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  width: 6em;
+  height: 3em;
+  display: flex;
+}
+.leftSideOfTopBarContainer {
+  width: 8em;
+  height: 3em;
+}
+.timerContainer {
+  background-image: url("./img/clockContainer.png");
+  background-size: contain;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  width: 8em;
+  height: 3em;
+  display: flex;
+}
+.topbarNumber {
+  flex: 1;
+  background-size: cover;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  background-image: url("./img/topbarNum9.png");
+}
 
 #boardContainer {
+  margin-top: 5px;
   display: grid;
   grid-template-columns: repeat(var(--GRID_WIDTH), max-content);
 }
@@ -22,7 +58,7 @@ body {
   height: 3em;
   background-color: #494646;
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -36,5 +72,3 @@ body {
   justify-content: center;
   cursor: pointer;
 }
-
-
