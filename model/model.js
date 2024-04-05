@@ -290,53 +290,33 @@ export default class Model {
   }
 
   calcProbabilities() {
-    let flagAmount = 0;
-    let closedTilesLeft = 0;
-
-    // Step 1: Count flags and closed tiles
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        if (this.grid[row][col].tileType.FLAG) {
-          flagAmount++;
-        }
-        if (!this.grid[row][col].isOpen) {
-          closedTilesLeft++;
-        }
-      }
-    }
-
-    // Step 2: Calculate probabilities for opened tiles
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         const tile = this.grid[row][col];
         if (tile.isOpen) {
-          // Check if all closed neighbors are bombs
+          // STEP 1 : Check if all closed neighbors are bombs
           let closedNeighbors = this.getClosedNeighbors(row, col);
           if (closedNeighbors.length === this.getIntValue(tile.tileType)) {
             closedNeighbors.forEach(neighbor => {
               neighbor.tileType.bombProbability = 100;
-              tile.tileType.logical = true;
-
             });
           }
-          // Check if all closed neighbors are safe
+          // STEP 2: Check if all closed neighbors are safe
           let potentialBombNeighbors = this.getClosedNeighbors(row, col);
           let confirmedBombTiles = potentialBombNeighbors.filter(neighbor => neighbor.tileType.bombProbability === 100);
           if (confirmedBombTiles.length === this.getIntValue(tile.tileType)) {
             potentialBombNeighbors.forEach(neighbor => {
               if (!confirmedBombTiles.includes(neighbor)) {
                 neighbor.tileType.bombProbability = 0;
-                tile.tileType.logical = true;
-
               }
             });
           }
-
-          // Check for "unknown" tiles (50-50)
+          // STEP 3: electric boogaloo
           let closedNeigbors = this.getClosedNeighbors(row, col);
           let bombTiles = [];
           let safeTiles = [];
           let unkTiles = [];
+          //get lists of different types of neighbors
           closedNeigbors.forEach(tile => {
             if (tile.tileType.bombProbability == 100) {
               bombTiles.push(tile)
@@ -346,14 +326,11 @@ export default class Model {
               unkTiles.push(tile)
             }
           })
-
-
+          //Only save unknown neigbors if len = 2 and 1 bomb ie. 50-50
           if (unkTiles.length == 2 && this.getIntValue(this.grid[row][col].tileType) - bombTiles.length == 1) {
             this.grid[row][col].tileType.unkTiles = unkTiles;
           }
-
           if (unkTiles.length == 3) {
-
             let openNeighbors = this.getOpenNeigbhors(row, col);
             openNeighbors.forEach(tile => {
               if (tile.tileType.unkTiles && tile.tileType.unkTiles.length == 2) {
@@ -365,11 +342,7 @@ export default class Model {
                   }
                 }
                 if (matchCount == 2) {
-                  console.log('MATCHHHH at : ' + row + "+" + col);
-                  // Set the object that is the 3rd unkTile
                   let thirdUnkTile = unkTiles.find(unkTile => !tile.tileType.unkTiles.includes(unkTile));
-                  // Now you can do whatever you need with thirdUnkTile
-                  // For example, you can set it to the tile object
                   if (this.grid[row][col].tileType.TWO && bombTiles.length == 0) {
                     thirdUnkTile.tileType.bombProbability = 101;
                     console.log('101');
@@ -377,7 +350,6 @@ export default class Model {
                     thirdUnkTile.tileType.bombProbability = 102;
                     console.log('102');
                   }
-
                 }
               }
             });
@@ -385,10 +357,6 @@ export default class Model {
         }
       }
     }
-
-
-
-
     return this.grid;
   }
 
