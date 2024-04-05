@@ -16,12 +16,12 @@ class TileType {
 
 
 export default class Model {
-  constructor(cols, rows, amountOfBombs) {
+  constructor(cols, rows, amountOfBombs, controller) {
     this.cols = cols;
     this.rows = rows;
     this.amountOfBombs = amountOfBombs;
     this.grid = [];
-    //bombList?
+    this.controller = controller;
   }
 
 
@@ -388,30 +388,35 @@ export default class Model {
         if (this.grid[row][col].tileType.bombProbability == 0) {
           this.openTile(row, col)
           didSomth = true
+          this.controller.updateView(this.grid)
         } else if (this.grid[row][col].tileType.bombProbability == 100) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
+          this.controller.updateView(this.grid)
+
         } else if (this.grid[row][col].tileType.bombProbability == 101) {
           this.grid[row][col].tileType.FLAG = true;
           didSomth = true
+          this.controller.updateView(this.grid)
+
         } else if (this.grid[row][col].tileType.bombProbability == 102) {
           this.openTile(row, col)
           didSomth = true
+          this.controller.updateView(this.grid)
+
         }
       }
     }
 
     if (!didSomth) {
-      // If no action was taken, terminate the recursion
-      console.log("No action taken, stopping autoplay");
-      return;
-    } else {
-      // If an action was taken, continue autoplay
-      this.autoPlay();
+        // If no action was taken, terminate the recursion
+        console.log("No action taken, stopping autoplay");
+       return this.grid;
+      } else {
+        // If an action was taken, continue autoplay after a delay of 1 second
+        setTimeout(() => {
+          this.autoPlay(this.grid);
+        }, 500); 
+      }
     }
-  }
-
-
-
 }
-

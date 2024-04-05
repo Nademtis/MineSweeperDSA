@@ -9,7 +9,7 @@ export default class Controller {
   }
 
   init() {
-    this.model = new Model(30, 16, 75);
+    this.model = new Model(30, 16, 75, this);
     this.view = new View(this);
 
     this.view.initEventListenters(this.model.cols);
@@ -21,7 +21,7 @@ export default class Controller {
 
   }
   reset(){
-    this.model = new Model(30, 16, 75);
+    this.model = new Model(30, 16, 75, this);
     this.view = new View(this);
     this.gameStarted = false;
     //this.view.initEventListenters(this.model.cols);
@@ -49,8 +49,10 @@ export default class Controller {
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
 
 
-      //only if enabled
-      //this.model.autoPlay();
+      
+       
+        //this.view.updateGrid(this.model.cols, this.model.autoPlay(this.model.grid));
+      
 
 
 
@@ -59,6 +61,10 @@ export default class Controller {
       this.openTile(row, col)
       this.view.showProbabilities(this.model.calcProbabilities(), this.model.cols)
     }
+  }
+
+  updateView(grid){
+    this.view.updateGrid(this.model.cols,grid)
   }
 
   handleTimer() {
